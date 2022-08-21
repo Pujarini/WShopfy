@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
+import colors from "colors";
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose
-      .createConnection(process.env.MONGO_DB)
-      .asPromise();
-    console.log(`MONGO DB is connected at ${conn.host}`);
+    const conn = await mongoose.connect(process.env.MONGO_DB, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
+    console.log(`MongoDB connected ${conn.connection.host}`);
   } catch (error) {
-    console.log(`error logged at ${error}`);
+    console.error(`Error: ${error}`);
     process.exit(1);
   }
 };
