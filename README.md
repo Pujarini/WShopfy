@@ -6,7 +6,7 @@ An e-commerce MERN stack project
 - [x] Product page
 - [x] APIs added (data served using backend)
 - [x] MongoDB connected using mongoose
-- [ ] Added Redux
+- [x] Added Redux (22 August 2022)
 - [ ] Shopping cart logic
 - [ ] backend authentication
 - [ ] frontend authentication
