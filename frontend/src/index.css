@@ -5,6 +5,11 @@ main {
 a {
   text-decoration: none !important;
 }
+
+h1 {
+  font-size: 1.5rem;
+  padding: 0.1rem;
+}
 .rating span {
   margin: 0.1rem;
 }

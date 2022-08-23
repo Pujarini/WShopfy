@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import HomeScreen from "./Pages/HomeScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductScreen from "./Pages/ProductScreen";
+import CartScreen from "./Pages/CartScreen";
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="cart">
+              <Route index element={<CartScreen />} />
+              <Route path=":id" element={<CartScreen />} />
+            </Route>
           </Routes>
         </Container>
       </main>
