@@ -3,7 +3,6 @@ import { ADD_TO_CART_ITEM, REMOVE_CART_ITEM } from "../types/cartTypes";
 
 export const addToCartAction = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);
-  console.log(id, qty);
   dispatch({
     type: ADD_TO_CART_ITEM,
     payload: {

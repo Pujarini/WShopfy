@@ -29,7 +29,6 @@ function CartScreen() {
   }, [dispatch, id, qty]);
 
   const removeFromCart = (id) => {
-    console.log(id);
     dispatch(removeCartAction(id));
   };
 
