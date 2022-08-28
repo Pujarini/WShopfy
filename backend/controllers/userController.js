@@ -38,7 +38,6 @@ const getProfile = expressAsyncHandler(async (req, res) => {
 const registerUser = expressAsyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
   const userExists = await User.findOne({ email });
-  console.log(userExists);
   if (userExists) {
     res.status(400);
     throw new Error(`User exists`);

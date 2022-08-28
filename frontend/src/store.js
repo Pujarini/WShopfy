@@ -9,7 +9,7 @@ const reducer = combineReducers({
   products: productListReducer,
   productDetails: productReducer,
   cart: cartReducer,
-  user: userLoginReducer,
+  userLogin: userLoginReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
@@ -17,7 +17,7 @@ const cartItemsFromStorage = localStorage.getItem("cartItems")
   : [];
 const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
-  : [];
+  : null;
 
 const initialState = {
   cart: {

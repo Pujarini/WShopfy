@@ -24,7 +24,7 @@ const Header = () => {
               </Nav.Link>
 
               <Nav.Link eventKey={2}>
-                <Link to="signIn">
+                <Link to="/signIn">
                   <i class="fa-solid fa-user"></i> Sign In
                 </Link>
               </Nav.Link>
