@@ -33,7 +33,8 @@ function CartScreen() {
   };
 
   const onCheckout = () => {
-    history("/login?redirect=shipping");
+    // history("/signIn?redirect=hello");
+    history("/signIn?redirect=shipping");
   };
   return (
     <Row>

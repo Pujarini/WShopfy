@@ -21,7 +21,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      history(redirect);
+      history(redirect.includes("/") ? redirect : "/" + redirect);
     }
   }, [userInfo, redirect, history]);
 
@@ -65,7 +65,7 @@ const LoginScreen = () => {
             to={
               redirect !== "/"
                 ? `/register/redirectTo=${redirect}`
-                : `${redirect}register`
+                : `/register`
             }
           >
             Register

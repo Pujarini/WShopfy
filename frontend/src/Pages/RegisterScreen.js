@@ -12,6 +12,7 @@ const RegisterScreen = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [confirmpassword, setconfirmpassword] = useState("");
+  const [message, setmessage] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
   const userRegister = useSelector((state) => state.userRegister);
@@ -29,12 +30,16 @@ const RegisterScreen = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    if (password !== confirmpassword) {
+      setmessage("Passwords do not match");
+    }
     dispatch(register(name, email, password));
   };
 
   return (
     <FormContainer>
       <h1>Sign Up</h1>
+      {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={onSubmitHandler}>
@@ -65,7 +70,7 @@ const RegisterScreen = () => {
             onChange={(e) => setpassword(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
+        <Form.Group className="mb-3" controlId="confirmpassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
@@ -84,8 +89,8 @@ const RegisterScreen = () => {
           <Link
             to={
               redirect !== "/"
-                ? `/login/redirectTo=${redirect}`
-                : `${redirect}login`
+                ? `/signIn/redirectTo=${redirect}`
+                : `${redirect}signIn`
             }
           >
             Login
