@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductScreen from "./Pages/ProductScreen";
 import CartScreen from "./Pages/CartScreen";
 import LoginScreen from "./Pages/LoginScreen";
+import RegisterScreen from "./Pages/RegisterScreen";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/signIn" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="cart">
               <Route index element={<CartScreen />} />

@@ -3,19 +3,21 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../actions/userActions";
+import { register } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
+  const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
+  const userRegister = useSelector((state) => state.userRegister);
   const history = useNavigate();
 
-  const { error, loading, userInfo } = userLogin;
+  const { error, loading, userInfo } = userRegister;
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
@@ -27,15 +29,24 @@ const LoginScreen = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(register(name, email, password));
   };
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={onSubmitHandler}>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Name"
+            value={name}
+            onChange={(e) => setname(e.target.value)}
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -54,21 +65,30 @@ const LoginScreen = () => {
             onChange={(e) => setpassword(e.target.value)}
           />
         </Form.Group>
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Confirm password"
+            value={confirmpassword}
+            onChange={(e) => setconfirmpassword(e.target.value)}
+          />
+        </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Register
         </Button>
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer?{" "}
+          Have an account?{" "}
           <Link
             to={
               redirect !== "/"
-                ? `/register/redirectTo=${redirect}`
-                : `${redirect}register`
+                ? `/login/redirectTo=${redirect}`
+                : `${redirect}login`
             }
           >
-            Register
+            Login
           </Link>
         </Col>
       </Row>
@@ -76,4 +96,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
