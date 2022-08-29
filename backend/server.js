@@ -1,9 +1,9 @@
 import express from "express";
 import env from "dotenv";
 import connectDB from "./config/db.js";
-import colors from "colors";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 env.config();
@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 app.use("/api/products", productRoutes);
 app.use(express.json());
 app.use("/api/users", userRoutes);
+app.use("/api/order", orderRoutes);
 
 app.use(notFound);
 
