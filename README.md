@@ -10,7 +10,7 @@ An e-commerce MERN stack project
 - [x] Shopping cart logic
 - [x] backend authentication
 - [x] frontend authentication (28 Aug)
-- [ ] Checkout Process
+- [x] Checkout Process (31 Aug)
 - [ ] Admin
 - [ ] Product review and search
 
