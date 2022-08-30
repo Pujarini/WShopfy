@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { PayPalButton } from "react-paypal-button-v2";
 import {
-  Button,
   Row,
   Col,
   ListGroup,
@@ -9,83 +10,110 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { createOrder } from "../actions/orderActions";
-import CheckoutSteps from "../components/CheckoutSteps";
+import { Link, useParams } from "react-router-dom";
+import { orderdetails, orderPay } from "../actions/orderActions";
+import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { ORDER_PAY_RESET } from "../types/orderTypes";
 
 const OrderScreen = () => {
-  const cart = useSelector((state) => state.cart);
-  const history = useNavigate();
-
-  const addDecimal = (num) => {
-    return Math.round((num * 100) / 100).toFixed(2);
-  };
-
-  cart.itemsPrice = addDecimal(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  );
-  cart.shippingPrice = addDecimal(cart.itemsPrice > 100 ? 100 : 0);
-  cart.taxPrice = addDecimal(Number(0.15 * cart.itemsPrice).toFixed(2));
-  cart.totalPrice =
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice);
-
   const dispatch = useDispatch();
+  const [sdkready, setSdkready] = useState(false);
 
-  const orderItem = useSelector((state) => state.createOrder);
-  const { order, success, error } = orderItem;
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { order, loading, error } = orderDetails;
+  const orderPayDetail = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPayDetail;
+
+  const { id } = useParams();
 
   useEffect(() => {
-    if (success) {
-      history(`/order/${order._id}`);
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkready(true);
+      };
+      document.body.appendChild(script);
+    };
+    if (!order || order._id !== id || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(orderdetails(id));
+    } else {
+      if (!order.isPaid) {
+        addPayPalScript();
+      } else {
+        setSdkready(true);
+      }
     }
-  }, [success]);
+  }, [order, id, successPay]);
 
-  const onOrderhandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        itemsPrice: cart.itemsPrice,
-        totalPrice: cart.totalPrice,
-      })
-    );
+  // const addDecimal = (num) => {
+  //   return Math.round((num * 100) / 100).toFixed(2);
+  // };
+
+  // order.itemsPrice = addDecimal(
+  //   order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  // );
+
+  const successHandler = (paymentResult) => {
+    dispatch(orderPay(id, paymentResult));
   };
-  return (
+  return loading ? (
+    <Loader />
+  ) : error ? (
+    <Message variant="danger"></Message>
+  ) : (
     <>
-      <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroupItem>
-              <h2>Shipping Address</h2>
+              <h2>Order id:{order._id}</h2>
+              <p>
+                <strong>Name :</strong>
+                {order.user.name}
+              </p>
+              <p>
+                <strong>Email :</strong>
+                <a href={`mailTo:${order.user.email}`}>{order.user.email}</a>
+              </p>
               <p>
                 <strong>Address :</strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
-                {cart.shippingAddress.postalcode},{" "}
-                {cart.shippingAddress.country}
+                {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
+                {order.shippingAddress.postalCode},{" "}
+                {order.shippingAddress.country}
               </p>
+              {order.isDelivered ? (
+                <Message variant="success">Delivered!</Message>
+              ) : (
+                <Message variant="danger">Not Delivered</Message>
+              )}
             </ListGroupItem>
             <ListGroupItem>
               <h2>Payment Method</h2>
               <p>
                 <strong>Method :</strong>
-                {cart.paymentMethod}
+                {order.paymentMethod}
               </p>
+              {order.isPaid ? (
+                <Message variant="success">Paid at {order.paidAt}</Message>
+              ) : (
+                <Message variant="danger">Not Paid</Message>
+              )}
             </ListGroupItem>
+
             <ListGroupItem>
               <h2>My Orders</h2>
-              {cart.cartItems.length === 0 ? (
+              {order.orderItems.length === 0 ? (
                 <Message>Your Cart is Empty</Message>
               ) : (
                 <>
                   <ListGroup>
-                    {cart.cartItems.map((item, index) => {
+                    {order.orderItems.map((item, index) => {
                       return (
                         <ListGroupItem variant="flush">
                           <Row>
@@ -126,37 +154,38 @@ const OrderScreen = () => {
             <ListGroupItem>
               <Row>
                 <Col>Items</Col>
-                <Col>${cart.itemsPrice}</Col>
+                <Col>${order.itemsPrice}</Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem>
               <Row>
                 <Col>Shipping</Col>
-                <Col>${cart.shippingPrice}</Col>
+                <Col>${order.shippingPrice}</Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem>
               <Row>
                 <Col>Tax</Col>
-                <Col>${cart.taxPrice}</Col>
+                <Col>${order.taxPrice}</Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem>
               <Row>
                 <Col>Total</Col>
-                <Col>${cart.totalPrice}</Col>
+                <Col>${order.totalPrice}</Col>
               </Row>
             </ListGroupItem>
-            <ListGroupItem className="p-2">
-              {error && <Message variant="danger">{error}</Message>}
-              <Button
-                type="button"
-                className="btn-block w-100"
-                disabled={cart.cart === 0}
-                onClick={onOrderhandler}
-              >
-                Place Order
-              </Button>
+            <ListGroupItem>
+              {loadingPay && <Loader />}
+              {!sdkready ? (
+                <Loader />
+              ) : (
+                <PayPalButton
+                  amount={order.totalPrice}
+                  // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                  onSuccess={successHandler}
+                />
+              )}
             </ListGroupItem>
           </Card>
         </Col>
