@@ -1,5 +1,5 @@
 # Prepshop
-An e-commerce MERN stack project
+An e-commerce MERN stack project progress 👇🏼
 
 - [x] Navbar
 - [x] Product listing page
