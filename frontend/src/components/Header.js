@@ -3,6 +3,7 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import { LinkContainer } from "react-router-bootstrap";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -43,11 +44,18 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <Nav.Link eventKey={2}>
-                  <Link to="/signIn">
+                <LinkContainer to="/signIn">
+                  <Nav.Link eventKey={2}>
                     <i class="fa-solid fa-user"></i> Sign In
-                  </Link>
-                </Nav.Link>
+                  </Nav.Link>
+                </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="Admin">
+                  <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
+                  <NavDropdown.Item>Orders</NavDropdown.Item>
+                  <NavDropdown.Item>Products</NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>

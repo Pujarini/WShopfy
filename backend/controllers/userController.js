@@ -35,6 +35,11 @@ const getProfile = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const getUsers = expressAsyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
 const updateProfile = expressAsyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
@@ -82,4 +87,22 @@ const registerUser = expressAsyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getProfile, registerUser, updateProfile };
+const deleteUser = expressAsyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    await user.remove();
+    res.json({ message: "User removed" });
+  } else {
+    res.status(401);
+    throw new Error(`User not found`);
+  }
+});
+
+export {
+  authUser,
+  getProfile,
+  registerUser,
+  updateProfile,
+  getUsers,
+  deleteUser,
+};
