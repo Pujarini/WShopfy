@@ -52,3 +52,12 @@
 
 ### Profile page with Orders
 <img width="1394" alt="Screen Shot 2022-08-31 at 12 49 19 AM" src="https://user-images.githubusercontent.com/34391629/187524691-cbdefb67-0681-48a2-a7ae-154e39731d95.png">
+
+### Admin Screen
+
+<img width="1395" alt="Screen Shot 2022-09-01 at 1 29 54 PM" src="https://user-images.githubusercontent.com/34391629/187863279-2f3478c6-5267-4217-9e4a-8cb6a0703d81.png">
+
+### Admin screen with user edit and delete functionality
+
+<img width="1378" alt="Screen Shot 2022-09-01 at 1 30 41 PM" src="https://user-images.githubusercontent.com/34391629/187863433-2f34029c-1a50-44c4-9fce-2931ba5c7397.png">
+
