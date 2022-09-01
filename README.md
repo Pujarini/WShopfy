@@ -57,7 +57,19 @@
 
 <img width="1395" alt="Screen Shot 2022-09-01 at 1 29 54 PM" src="https://user-images.githubusercontent.com/34391629/187863279-2f3478c6-5267-4217-9e4a-8cb6a0703d81.png">
 
+
 ### Admin screen with user edit and delete functionality
 
 <img width="1378" alt="Screen Shot 2022-09-01 at 1 30 41 PM" src="https://user-images.githubusercontent.com/34391629/187863433-2f34029c-1a50-44c4-9fce-2931ba5c7397.png">
+
+### Admin Screen with product edit and delete functionality 
+
+<img width="1394" alt="Screen Shot 2022-09-01 at 11 31 02 PM" src="https://user-images.githubusercontent.com/34391629/187982166-04781f07-793b-4f60-9d91-b33de3c6207d.png">
+
+### Product Edit screen for Admin
+
+
+![screencapture-localhost-3000-admin-product-63106061b41837e6cb06e1b9-edit-2022-09-01-23_31_48](https://user-images.githubusercontent.com/34391629/187982516-7f59218e-b646-48b4-9e7a-664e847eebc3.png)
+
+
 
