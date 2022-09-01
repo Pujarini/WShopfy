@@ -11,6 +11,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILURE,
 } from "../types/productTypes";
 import axios from "axios";
 
@@ -88,6 +91,33 @@ export const createProduct = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CREATE_PRODUCT_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateProduct = (prod) => async (dispatch, getState) => {
+  dispatch({ type: UPDATE_PRODUCT_REQUEST });
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  };
+  console.log(prod);
+  try {
+    const { data } = await axios.put(`/api/products/${prod._id}`, prod, config);
+    console.log(data);
+    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

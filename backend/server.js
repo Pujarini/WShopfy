@@ -15,8 +15,8 @@ app.get("/", (req, res) => {
   res.send("API IS RUNNING");
 });
 
-app.use("/api/products", productRoutes);
 app.use(express.json());
+app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 

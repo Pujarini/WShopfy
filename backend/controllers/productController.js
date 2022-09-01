@@ -43,22 +43,22 @@ const createProduct = expressAsyncHandler(async (req, res) => {
 });
 
 const updateProduct = expressAsyncHandler(async (req, res) => {
-  const { name, description, brand, category, price, image, countInStock } =
-    req.body;
   const product = await Product.findById(req.params.id);
+
   if (product) {
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.image = image;
-    product.brand = brand;
-    product.category = category;
-    product.countInStock = countInStock;
-    const updateProduct = await product.save();
-    res.json(updateProduct);
+    product.name = req.body.name;
+    product.price = req.body.price;
+    product.description = req.body.description;
+    product.image = req.body.image;
+    product.brand = req.body.brand;
+    product.category = req.body.category;
+    product.countInStock = req.body.countInStock;
+
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
   } else {
-    res.json(404);
-    throw new Error("Product was found");
+    res.status(404);
+    throw new Error("Product not Found");
   }
 });
 
