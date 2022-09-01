@@ -1,0 +1,108 @@
+import React, { useEffect } from "react";
+import { Button, Table, Row, Col } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import { useNavigate } from "react-router-dom";
+import { deleteProduct, listProducts } from "../actions/productActions";
+
+const ProductListScreen = () => {
+  const productList = useSelector((state) => state.products);
+  const { error, loading, products } = productList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const deletedProducts = useSelector((state) => state.deleteProductReducer);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = deletedProducts;
+
+  const dispatch = useDispatch();
+  const history = useNavigate();
+
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listProducts());
+    } else {
+      history("/signIn");
+    }
+  }, [dispatch, userInfo, history, successDelete]);
+
+  const onDeleteHandler = (id) => {
+    if (window.confirm("Are you sure to delete this product?")) {
+      dispatch(deleteProduct(id));
+    }
+  };
+
+  const onCreateProduct = () => {
+    console.log("crete");
+  };
+
+  return (
+    <>
+      <Row>
+        <Col className="align-items-center">
+          <h1>Products</h1>
+        </Col>
+        <Col className="text-right">
+          <Button className="my-3" onClick={onCreateProduct}>
+            <i class="fa-duotone fa-plus"></i>Create Product
+          </Button>
+        </Col>
+      </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Table striped bordered hover responsive className="table-sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>PRICE</th>
+              <th>BRAND</th>
+              <th>CATEGORY</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => {
+              return (
+                <tr className="m-1">
+                  <td>{product._id}</td>
+                  <td>{product.name}</td>
+                  <td>${product.price}</td>
+                  <td>{product.brand}</td>
+                  <td>{product.category}</td>
+                  <td className="m-2">
+                    <LinkContainer to={`/product/${product._id}/edit`}>
+                      <Button>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </Button>
+                    </LinkContainer>
+                    <Button
+                      variant="danger"
+                      onClick={() => onDeleteHandler(product._id)}
+                      style={{ color: "grey" }}
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      )}
+    </>
+  );
+};
+
+export default ProductListScreen;
