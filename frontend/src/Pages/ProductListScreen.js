@@ -67,11 +67,11 @@ const ProductListScreen = () => {
 
   return (
     <>
-      <Row>
+      <Row className="heading">
         <Col className="align-items-center">
           <h1>Products</h1>
         </Col>
-        <Col className="text-right">
+        <Col className="text-right create-btn">
           <Button className="my-3" onClick={onCreateProduct}>
             <i class="fa-duotone fa-plus"></i>Create Product
           </Button>

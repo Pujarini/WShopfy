@@ -13,3 +13,8 @@ h1 {
 .rating span {
   margin: 0.1rem;
 }
+
+.create-btn {
+  display: flex;
+  justify-content: flex-end;
+}
