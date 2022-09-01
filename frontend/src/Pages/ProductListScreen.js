@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useNavigate } from "react-router-dom";
-import { deleteProduct, listProducts } from "../actions/productActions";
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from "../actions/productActions";
+import { CREATE_PRODUCT_RESET } from "../types/productTypes";
 
 const ProductListScreen = () => {
   const productList = useSelector((state) => state.products);
@@ -20,17 +25,35 @@ const ProductListScreen = () => {
     error: errorDelete,
     success: successDelete,
   } = deletedProducts;
+  const createdProduct = useSelector((state) => state.createProduct);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: productCreated,
+  } = createdProduct;
 
   const dispatch = useDispatch();
   const history = useNavigate();
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts());
-    } else {
+    dispatch({ type: CREATE_PRODUCT_RESET });
+    if (!userInfo.isAdmin) {
       history("/signIn");
     }
-  }, [dispatch, userInfo, history, successDelete]);
+    if (successCreate) {
+      history(`/admin/product/${productCreated._id}/edit`);
+    } else {
+      dispatch(listProducts());
+    }
+  }, [
+    dispatch,
+    userInfo,
+    history,
+    successDelete,
+    successCreate,
+    productCreated,
+  ]);
 
   const onDeleteHandler = (id) => {
     if (window.confirm("Are you sure to delete this product?")) {
@@ -39,7 +62,7 @@ const ProductListScreen = () => {
   };
 
   const onCreateProduct = () => {
-    console.log("crete");
+    dispatch(createProduct());
   };
 
   return (
@@ -54,6 +77,8 @@ const ProductListScreen = () => {
           </Button>
         </Col>
       </Row>
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       {loading ? (
@@ -82,7 +107,7 @@ const ProductListScreen = () => {
                   <td>{product.brand}</td>
                   <td>{product.category}</td>
                   <td className="m-2">
-                    <LinkContainer to={`/product/${product._id}/edit`}>
+                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button>
                         <i class="fa-solid fa-pen-to-square"></i>
                       </Button>
