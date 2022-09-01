@@ -4,6 +4,9 @@ import {
   DELETE_USER_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  GET_USER_DETAILS_BY_ID_FAILURE,
+  GET_USER_DETAILS_BY_ID_REQUEST,
+  GET_USER_DETAILS_BY_ID_SUCCESS,
   USER_DETAILS_FAILURE,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -19,6 +22,9 @@ import {
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_BY_ID_FAILURE,
+  USER_UPDATE_BY_ID_REQUEST,
+  USER_UPDATE_BY_ID_SUCCESS,
   USER_UPDATE_PROFILE_FAILURE,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -177,6 +183,58 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getUserDetailsById = (id) => async (dispatch, getState) => {
+  dispatch({ type: GET_USER_DETAILS_BY_ID_REQUEST });
+
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  };
+  try {
+    const { data } = await axios.get(`/api/users/${id}`, config);
+    dispatch({ type: GET_USER_DETAILS_BY_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_USER_DETAILS_BY_ID_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserByIdDetails = (user) => async (dispatch, getState) => {
+  dispatch({ type: USER_UPDATE_BY_ID_REQUEST });
+
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  };
+  try {
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+    dispatch({ type: USER_UPDATE_BY_ID_SUCCESS });
+    dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_BY_ID_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

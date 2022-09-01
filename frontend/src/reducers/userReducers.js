@@ -2,6 +2,9 @@ import {
   DELETE_USER_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  GET_USER_DETAILS_BY_ID_FAILURE,
+  GET_USER_DETAILS_BY_ID_REQUEST,
+  GET_USER_DETAILS_BY_ID_SUCCESS,
   USER_DETAILS_FAILURE,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
@@ -17,6 +20,10 @@ import {
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_BY_ID_FAILURE,
+  USER_UPDATE_BY_ID_REQUEST,
+  USER_UPDATE_BY_ID_RESET,
+  USER_UPDATE_BY_ID_SUCCESS,
   USER_UPDATE_PROFILE_FAILURE,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -102,6 +109,34 @@ export const deleteUserReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case DELETE_USER_FAILURE:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userByIdReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case GET_USER_DETAILS_BY_ID_REQUEST:
+      return { ...state, loading: true };
+    case GET_USER_DETAILS_BY_ID_SUCCESS:
+      return { loading: false, user: action.payload };
+    case GET_USER_DETAILS_BY_ID_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userUpdateByIdReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case USER_UPDATE_BY_ID_REQUEST:
+      return { loading: true };
+    case USER_UPDATE_BY_ID_SUCCESS:
+      return { loading: false, success: true };
+    case USER_UPDATE_BY_ID_FAILURE:
+      return { loading: false, error: action.payload };
+    case USER_UPDATE_BY_ID_RESET:
+      return {};
     default:
       return state;
   }
