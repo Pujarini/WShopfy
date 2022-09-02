@@ -27,7 +27,7 @@ const ProductScreen = () => {
 
   useEffect(() => {
     dispatch(listProduct(id));
-  }, [id]);
+  }, [id, dispatch]);
 
   const addToCart = () => {
     history(`/cart/${id}?qty=${qty}`);

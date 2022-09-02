@@ -8,13 +8,14 @@ import {
   Image,
   ListGroupItem,
   Card,
+  Button,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { orderdetails, orderPay } from "../actions/orderActions";
+import { orderDeliver, orderdetails, orderPay } from "../actions/orderActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { ORDER_PAY_RESET } from "../types/orderTypes";
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from "../types/orderTypes";
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,11 @@ const OrderScreen = () => {
   const { order, loading, error } = orderDetails;
   const orderPayDetail = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPayDetail;
+  const ordersDelivered = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = ordersDelivered;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const { id } = useParams();
 
@@ -39,8 +45,9 @@ const OrderScreen = () => {
       };
       document.body.appendChild(script);
     };
-    if (!order || order._id !== id || successPay) {
+    if (!order || order._id !== id || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(orderdetails(id));
     } else {
       if (!order.isPaid) {
@@ -49,18 +56,14 @@ const OrderScreen = () => {
         setSdkready(true);
       }
     }
-  }, [order, id, successPay]);
-
-  // const addDecimal = (num) => {
-  //   return Math.round((num * 100) / 100).toFixed(2);
-  // };
-
-  // order.itemsPrice = addDecimal(
-  //   order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  // );
+  }, [order, id, successPay, successDeliver, dispatch]);
 
   const successHandler = (paymentResult) => {
     dispatch(orderPay(id, paymentResult));
+  };
+
+  const deliverhandler = () => {
+    dispatch(orderDeliver(order));
   };
   return loading ? (
     <Loader />
@@ -88,7 +91,7 @@ const OrderScreen = () => {
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered ? (
-                <Message variant="success">Delivered!</Message>
+                <Message variant="success">Paid at {order.deliveredAt}</Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
@@ -180,13 +183,29 @@ const OrderScreen = () => {
               {!sdkready ? (
                 <Loader />
               ) : (
-                <PayPalButton
-                  amount={order.totalPrice}
-                  // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                  onSuccess={successHandler}
-                />
+                !order.isPaid && (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successHandler}
+                  />
+                )
               )}
             </ListGroupItem>
+            {loadingDeliver && <Loader />}
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <ListGroupItem>
+                  <Button
+                    type="button"
+                    className="btn btn-block w-100 mt-3"
+                    onClick={deliverhandler}
+                  >
+                    Mark as Delivered
+                  </Button>
+                </ListGroupItem>
+              )}
           </Card>
         </Col>
       </Row>

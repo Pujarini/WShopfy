@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useNavigate } from "react-router-dom";
 import { listOrders } from "../actions/orderActions";
 import { ORDER_LIST_RESET } from "../types/orderTypes";
+import { LinkContainer } from "react-router-bootstrap";
 
 const OrderListScreen = () => {
   const orderList = useSelector((state) => state.orders);
@@ -47,6 +48,7 @@ const OrderListScreen = () => {
                   <th>TOTAL</th>
                   <th>PAID</th>
                   <th>DELIVERED</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -82,6 +84,11 @@ const OrderListScreen = () => {
                             style={{ color: "red" }}
                           ></i>
                         )}
+                      </td>
+                      <td>
+                        <LinkContainer to={`/order/${order._id}`}>
+                          <Button>Details</Button>
+                        </LinkContainer>
                       </td>
                     </tr>
                   );
