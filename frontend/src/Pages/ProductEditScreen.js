@@ -7,6 +7,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProduct, updateProduct } from "../actions/productActions";
 import { UPDATE_PRODUCT_RESET } from "../types/productTypes";
+import axios from "axios";
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const ProductEditScreen = () => {
   const [image, setImage] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -66,6 +68,28 @@ const ProductEditScreen = () => {
       })
     );
     // dispatch(updateUserByIdDetails({ _id: id, name, email, isAdmin }));
+  };
+
+  const onFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", formData, config);
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
   };
 
   return (
@@ -130,7 +154,12 @@ const ProductEditScreen = () => {
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="image">
+            <Form.Group controlId="uploadimg" className="mb-3">
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" onChange={onFileUpload} />
+              {uploading && <Loader />}
+            </Form.Group>
+            {/* <Form.Group controlId="image">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="text"
@@ -138,7 +167,7 @@ const ProductEditScreen = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control

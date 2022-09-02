@@ -110,10 +110,8 @@ export const updateProduct = (prod) => async (dispatch, getState) => {
       Authorization: `Bearer ${userInfo.token}`,
     },
   };
-  console.log(prod);
   try {
     const { data } = await axios.put(`/api/products/${prod._id}`, prod, config);
-    console.log(data);
     dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
