@@ -31,8 +31,6 @@ const UserEditScreen = () => {
     success: successUpdate,
   } = userUpdate;
 
-  console.log(successUpdate);
-
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_BY_ID_RESET });

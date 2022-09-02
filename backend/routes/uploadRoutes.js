@@ -36,7 +36,6 @@ const upload = multer({
 });
 
 router.post("/", upload.single("image"), function (req, res) {
-  console.log(req.file);
   res.send(`${req.file.path}`);
 });
 

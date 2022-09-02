@@ -18,6 +18,7 @@ const ProfileScreen = () => {
   const history = useNavigate();
 
   const userDetails = useSelector((state) => state.userDetails);
+
   const { error, loading, user } = userDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
