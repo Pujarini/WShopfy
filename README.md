@@ -2,7 +2,7 @@
 
 ## Tech Stack
 
-**Client:** React, Redux, React Bootstrap, React redux Bootstrap, React router dom
+**Client:** React, Redux, React Bootstrap, React redux Bootstrap, React router dom, multer
 
 **Server:** Node, Express, MongoDB
 
