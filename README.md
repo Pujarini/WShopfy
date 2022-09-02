@@ -2,7 +2,7 @@
 
 ## Tech Stack
 
-**Client:** React, Redux, React Bootstrap, React redux Bootstrap, React router dom, multer
+**Client:** React, Redux, React Bootstrap, React redux Bootstrap, React router dom, multer, react-paypal-button-v2
 
 **Server:** Node, Express, MongoDB
 
