@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import {
   createProduct,
+  createProductReview,
   deleteProduct,
   getProducts,
   getProductsById,
@@ -15,5 +16,6 @@ router
   .get(getProductsById)
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
+router.route("/:id/reviews").post(protect, createProductReview);
 
 export default router;
