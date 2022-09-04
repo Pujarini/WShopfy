@@ -39,6 +39,7 @@ This is an eCommerce web application created with M(ongoDb)E(xpress)R(eact)N(ode
 - [x] Admin - product creation, edit , delete and update functionality added.
 - [x] Product review (4 september)
 - [x] search a product (4 september)
+- [ ] Deploy app
 
 ### Login Page
 
