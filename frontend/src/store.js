@@ -6,6 +6,7 @@ import {
   deleteProductReducer,
   productListReducer,
   productReducer,
+  topproductListReducer,
   updateProductReducer,
 } from "./reducers/productReducer";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -51,6 +52,7 @@ const reducer = combineReducers({
   currentUser: userByIdReducer,
   userUpdateReducer: userUpdateByIdReducer,
   deleteProductReducer: deleteProductReducer,
+  topRatedProduct: topproductListReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")

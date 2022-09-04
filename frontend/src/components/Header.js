@@ -22,24 +22,28 @@ const Header = () => {
       <Navbar collapseOnSelect expand="lg" bg="light">
         <Container>
           <Link to="/">
-            <Navbar.Brand>PREPSHOP</Navbar.Brand>
+            <Navbar.Brand>W SHOPFY</Navbar.Brand>
           </Link>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <div className="d-flex">
-            <Searchbox />
-          </div>
+          {userInfo && (
+            <div className="d-flex">
+              <Searchbox />
+            </div>
+          )}
 
           <Navbar.Collapse
             id="responsive-navbar-nav"
             className="justify-content-end"
           >
             <Nav>
-              <Nav.Link>
-                <Link to="/cart">
-                  <i class="fa-solid fa-cart-shopping"></i> Cart
-                </Link>
-              </Nav.Link>
+              {userInfo && (
+                <Nav.Link>
+                  <Link to="/cart">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart
+                  </Link>
+                </Nav.Link>
+              )}
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="userProfile">
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>

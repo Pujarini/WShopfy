@@ -2,7 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 
 const getProducts = expressAsyncHandler(async (req, res) => {
-  const pageSize = 2;
+  const pageSize = 4;
   const page = req.query.page || 1;
   const keyword = req.query.keyword
     ? {
@@ -45,7 +45,7 @@ const createProduct = expressAsyncHandler(async (req, res) => {
     name: "sample  name",
     description: "sample desc",
     brand: "sample",
-    category: "category",
+    category: "sample category",
     price: 9,
     numReviews: 3,
     image: "/images/airpods.jpg",
@@ -107,6 +107,11 @@ const createProductReview = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const getTopRatedProducts = expressAsyncHandler(async (req, res) => {
+  const product = await Product.find({}).sort({ rating: -1 }).limit(3);
+  res.json(product);
+});
+
 export {
   getProducts,
   getProductsById,
@@ -114,4 +119,5 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
+  getTopRatedProducts,
 };

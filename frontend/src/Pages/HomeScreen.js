@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useParams } from "react-router-dom";
 import Paginate from "../components/Paginate";
+import TopRatedCarousel from "../components/TopRatedCarousel";
 
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams();
@@ -22,7 +23,8 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Latest Products</h1>
+      {!keyword && <TopRatedCarousel />}
+      <h1 className="mt-3">Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (

@@ -15,7 +15,7 @@ const Searchbox = () => {
     }
   };
   return (
-    <Form onSubmit={onSubmitHandler} className="d-flex">
+    <Form onSubmit={onSubmitHandler} className="d-flex search">
       <Form.Group as={Col}>
         <Form.Control
           type="text"
@@ -26,7 +26,7 @@ const Searchbox = () => {
         ></Form.Control>
       </Form.Group>
 
-      <Button type="submit" variant="outline">
+      <Button type="submit" variant="outline" className="submit-btn">
         Search
       </Button>
     </Form>
