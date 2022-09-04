@@ -100,7 +100,6 @@ export const orderPay =
   };
 
 export const orderDeliver = (order) => async (dispatch, getState) => {
-  console.log(order);
   dispatch({ type: ORDER_DELIVER_REQUEST });
   const {
     userLogin: { userInfo },

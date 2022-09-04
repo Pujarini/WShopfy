@@ -2,6 +2,8 @@ import expressAsyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 
 const getProducts = expressAsyncHandler(async (req, res) => {
+  const pageSize = 2;
+  const page = req.query.page || 1;
   const keyword = req.query.keyword
     ? {
         name: {
@@ -10,8 +12,12 @@ const getProducts = expressAsyncHandler(async (req, res) => {
         },
       }
     : {};
-  const products = await Product.find({ ...keyword });
-  res.json(products);
+
+  const count = await Product.countDocuments({ ...keyword }); //total products
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 const getProductsById = expressAsyncHandler(async (req, res) => {
@@ -78,7 +84,6 @@ const createProductReview = expressAsyncHandler(async (req, res) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-    console.log(alreadyReviewed);
     if (alreadyReviewed) {
       res.status(400);
       throw new Error(`Product already reviewed`);
