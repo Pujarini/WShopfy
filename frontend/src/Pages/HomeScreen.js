@@ -5,8 +5,11 @@ import { listProducts } from "../actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { useParams } from "react-router-dom";
 
 const HomeScreen = () => {
+  const { keyword } = useParams();
+
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.products);
@@ -14,8 +17,8 @@ const HomeScreen = () => {
   const { error, loading, products } = productList;
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <>

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
+import Searchbox from "../Pages/Searchbox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const Header = () => {
           </Link>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <div className="d-flex">
+            <Searchbox />
+          </div>
+
           <Navbar.Collapse
             id="responsive-navbar-nav"
             className="justify-content-end"
