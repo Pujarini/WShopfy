@@ -19,7 +19,8 @@
 - [x] frontend authentication (28 Aug)
 - [x] Checkout Process (31 Aug)
 - [x] Admin - product creation, edit , delete and update functionality added.
-- [ ] Product review and search
+- [x] Product review 
+- [ ] search a product
 
 ### Login Page
 
