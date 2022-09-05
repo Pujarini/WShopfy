@@ -5,7 +5,7 @@ import { listProducts } from "../actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Paginate from "../components/Paginate";
 import TopRatedCarousel from "../components/TopRatedCarousel";
 
@@ -31,15 +31,21 @@ const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <Row>
-            {products.map((item) => {
-              return (
-                <Col sm={12} md={4} lg={4} xl={3}>
-                  <Products product={item} />
-                </Col>
-              );
-            })}
-          </Row>
+          {products.length === 0 && keyword ? (
+            <Message>
+              Oops no products found! <Link to="/">Go to HomePage</Link>
+            </Message>
+          ) : (
+            <Row>
+              {products.map((item) => {
+                return (
+                  <Col sm={12} md={4} lg={4} xl={3}>
+                    <Products product={item} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )}
           <Paginate
             keyword={keyword ? keyword : ""}
             page={pageNumber}
