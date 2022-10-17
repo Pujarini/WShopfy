@@ -10,7 +10,6 @@ import CartScreen from "./Pages/CartScreen";
 import LoginScreen from "./Pages/LoginScreen";
 import RegisterScreen from "./Pages/RegisterScreen";
 import ProfileScreen from "./Pages/ProfileScreen";
-import ShippingScreen from "./Pages/ShippingScreen";
 import PaymentScreen from "./Pages/PaymentScreen";
 import PlaceOrderScreen from "./Pages/PlaceOrderScreen";
 import OrderScreen from "./Pages/OrderScreen";
@@ -31,11 +30,11 @@ function App() {
             <Route path="/signIn" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
-            <Route path="/shipping" element={<ShippingScreen />} />
             <Route path="/payment" element={<PaymentScreen />} />
             <Route path="/order/:id" element={<OrderScreen />} />
             <Route path="/admin/users" element={<UserListScreen />} />
             <Route path="/admin/orders" element={<OrderListScreen />} />
+            <Route path="/shipping" element={<ShippingScreen />} />
             <Route
               path="/admin/products"
               element={<ProductListScreen />}
