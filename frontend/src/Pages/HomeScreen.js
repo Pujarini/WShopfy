@@ -23,7 +23,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      {!keyword && <TopRatedCarousel />}
+      {/* {!keyword && <TopRatedCarousel />} */}
       <h1 className="mt-3">Latest Products</h1>
       {loading ? (
         <Loader />
@@ -31,19 +31,20 @@ const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          {products.length === 0 && keyword ? (
+          {products && products.length === 0 && keyword ? (
             <Message>
               Oops no products found! <Link to="/">Go to HomePage</Link>
             </Message>
           ) : (
             <Row>
-              {products.map((item) => {
-                return (
-                  <Col sm={12} md={4} lg={4} xl={3}>
-                    <Products product={item} />
-                  </Col>
-                );
-              })}
+              {products &&
+                products.map((item) => {
+                  return (
+                    <Col sm={12} md={4} lg={4} xl={3}>
+                      <Products product={item} />
+                    </Col>
+                  );
+                })}
             </Row>
           )}
           <Paginate
